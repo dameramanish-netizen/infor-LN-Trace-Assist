@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infor LN Specialist Hub</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #090d16, #111827, #0f172a);
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            
+            /* Apple-style translucent minimalist hover highlight */
+            --accent: rgba(255, 255, 255, 0.4); 
+            --accent-muted: rgba(255, 255, 255, 0.05);
+            
+            --disabled: #475569;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 2rem;
+            box-sizing: border-box;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Animated Blobs */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(130px);
+            opacity: 0.18;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .blob-1 {
+            top: -10%;
+            right: -10%;
+            width: 550px;
+            height: 550px;
+            background: #4f46e5;
+            animation: drift 25s infinite alternate ease-in-out;
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            left: -10%;
+            width: 650px;
+            height: 650px;
+            background: #701a75;
+            animation: drift 30s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-100px, 50px) scale(1.15); }
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 4rem;
+            max-width: 1100px;
+            width: 100%;
+            align-items: start;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Profile Sidebar Section */
+        .profile-sidebar {
+            position: sticky;
+            top: 3rem;
+        }
+
+        .profile-sidebar h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin: 0 0 1.5rem 0;
+            background: linear-gradient(to right, #ffffff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-me-text {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .about-me-text p {
+            margin: 0 0 1.2rem 0;
+        }
+
+        /* Projects Side Grid - One Perfect Vertical Column */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: start; 
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 16px;
+            padding: 2.2rem;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .launch-link {
+            color: #818cf8; /* Keeps link arrows easily visible */
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+            padding-left: 0.5rem;
+        }
+
+        .launch-link:hover {
+            transform: translate(2px, -2px);
+        }
+
+        .launch-link.upcoming {
+            color: var(--disabled);
+            font-size: 0.85rem;
+            font-family: monospace;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            line-height: 1.6;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .card-footer {
+            margin-top: auto; 
+        }
+
+        .toggle-btn {
+            background: var(--accent-muted);
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+            transition: background 0.2s ease;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .toggle-btn .arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 0.75rem;
+        }
+
+        .operations-panel {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, margin-top 0.4s ease;
+        }
+
+        .operations-panel.expanded {
+            max-height: 500px;
+            margin-top: 1.5rem;
+            opacity: 1;
+        }
+
+        .card.active-card .toggle-btn .arrow {
+            transform: rotate(180deg);
+        }
+
+        .operations-panel h4 {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #818cf8;
+            font-family: monospace;
+        }
+
+        .operations-panel ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .operations-panel li {
+            margin-bottom: 0.6rem;
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .profile-sidebar {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="main-layout">
+        
+        <aside class="profile-sidebar">
+            <h1>Consultant & Developer</h1>
+            <div class="about-me-text">
+                <p>I specialize in backend utilities, and diagnostic tool development within complex ERP systems.</p>
+                <p>This central dashboard hosts my specialized pipeline of performance tracking, file parsing, and debugging platforms engineered to maintain codebase integrity and streamline technical workflows.</p>
+            </div>
+        </aside>
+
+        <main class="grid">
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h3>Infor LN Trace Engine</h3>
+                        <a href="https://inforlntraceanalyzerwebpy.streamlit.app/" target="_blank" class="launch-link" title="Launch Application">↗</a>
+                    </div>
+                    <p class="card-description">High-performance diagnostic utility optimized for deep-level automated log parsing, structural error identification, and stack isolation.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="toggle-btn" onclick="toggleDetails(this)">
+                        How it operates <span class="arrow">▼</span>
+                    </button>
+                    <div class="operations-panel">
+                        <h4>Operational Mechanics</h4>
+                        <ul>
+                            <li>Scans massive trace streams to instantly isolate execution errors and map historical line occurrences.</li>
+                            <li>Dynamically targets and prints the absolute execution stack layout of any selected error string.</li>
+                            <li>Features a conditional depth-evaluation algorithm (toggled via checkbox) to accurately filter structural call hierarchies.</li>
+                            <li>Natively streams and decompresses compressed <code>.gz</code> archive files on-the-fly, entirely bypassing local disk extraction overhead.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h3>Trace Comparison</h3>
+                        <span class="launch-link upcoming">WIP</span>
+                    </div>
+                    <p class="card-description">Dual-trace differential analysis engine engineered to cleanly isolate execution path variations between successful and failed environments.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="toggle-btn" onclick="toggleDetails(this)">
+                        How it operates <span class="arrow">▼</span>
+                    </button>
+                    <div class="operations-panel">
+                        <h4>Operational Mechanics</h4>
+                        <ul>
+                            <li>Executes keyword-targeted structural scans across twin trace files to map precise workflow deviations.</li>
+                            <li>Highlights functional lines shared globally while explicitly isolating components entirely missing from the failure state.</li>
+                            <li>Analyzes only the explicit calling and returning loops of the specified keyword, successfully stripping away redundant log noise.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h3>Performance Check</h3>
+                        <span class="launch-link upcoming">WIP</span>
+                    </div>
+                    <p class="card-description">Algorithmic execution profiling framework constructed to parse timing telemetry and expose optimization bottlenecks instantly.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="toggle-btn" onclick="toggleDetails(this)">
+                        How it operates <span class="arrow">▼</span>
+                    </button>
+                    <div class="operations-panel">
+                        <h4>Operational Mechanics</h4>
+                        <ul>
+                            <li>Tracks, parses, and resolves exact timestamps to isolate individual function processing durations down to the millisecond.</li>
+                            <li>Aggregates calculated data into a unified performance telemetry map.</li>
+                            <li>Automatically sorts and ranks the resulting dataset in precise descending order, isolating the heaviest operational bottlenecks.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function toggleDetails(button) {
+            const card = button.closest('.card');
+            const panel = card.querySelector('.operations-panel');
+            
+            card.classList.toggle('active-card');
+            
+            if (panel.classList.contains('expanded')) {
+                panel.classList.remove('expanded');
+            } else {
+                panel.classList.add('expanded');
+            }
+        }
+    </script>
+</body>
+</html>
