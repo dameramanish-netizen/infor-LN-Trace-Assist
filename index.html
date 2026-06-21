@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infor LN Trace Assist</title>
+    <title>Infor LN Specialist Hub</title>
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #090d16, #111827, #0f172a);
@@ -106,7 +106,7 @@
             margin: 0 0 1.2rem 0;
         }
 
-        /* Projects Side Grid - One Perfect Vertical Column */
+        /* Projects Side Grid - Vertical Column */
         .grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -151,7 +151,7 @@
         }
 
         .launch-link {
-            color: #818cf8; /* Keeps link arrows easily visible */
+            color: #818cf8;
             text-decoration: none;
             font-size: 1.2rem;
             transition: transform 0.2s ease;
@@ -264,11 +264,13 @@
 </head>
 <body>
 
+    <!-- Ambient background objects -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
     <div class="main-layout">
         
+        <!-- Left Column: About Me Sidebar -->
         <aside class="profile-sidebar">
             <h1>Consultant & Developer</h1>
             <div class="about-me-text">
@@ -277,13 +279,15 @@
             </div>
         </aside>
 
+        <!-- Right Column: Vertical Dashboard Stack -->
         <main class="grid">
             
+            <!-- Card 1: Infor LN Trace Engine -->
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
                         <h3>Infor LN Trace Engine</h3>
-                        <a href="https://huggingface.co/spaces/Manish0000007/ln-trace-debugger" target="_blank" class="launch-link" title="Launch Application">↗</a>
+                        <a href="https://manish0000007-ln-trace-debugger.hf.space" target="_blank" class="launch-link" title="Launch Application">↗</a>
                     </div>
                     <p class="card-description">High-performance diagnostic utility optimized for deep-level automated log parsing, structural error identification, and stack isolation.</p>
                 </div>
@@ -303,11 +307,12 @@
                 </div>
             </div>
 
+            <!-- Card 2: Trace Comparison -->
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
                         <h3>Trace Comparison</h3>
-                        <span class="launch-link upcoming">WIP</span>
+                        <a href="https://manish0000007-infor-ln-trace-compare.hf.space/" target="_blank" class="launch-link" title="Launch Application">↗</a>
                     </div>
                     <p class="card-description">Dual-trace differential analysis engine engineered to cleanly isolate execution path variations between successful and failed environments.</p>
                 </div>
@@ -326,6 +331,7 @@
                 </div>
             </div>
 
+            <!-- Card 3: Performance Check -->
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
