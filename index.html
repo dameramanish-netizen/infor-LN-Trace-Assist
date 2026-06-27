@@ -18,7 +18,32 @@
             
             --disabled: #475569;
         }
-
+        
+        <!-- Load the official Gradio Client for browser environments -->
+        <script type="module">
+          import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/+esm";
+        
+          // Initialize clients for your three Hugging Face backend Spaces
+          const traceEngineClient = await Client.connect("manish0000007/ln-trace-debugger");
+          const compareClient = await Client.connect("manish0000007/infor-ln-trace-compare");
+          const perfClient = await Client.connect("manish0000007/performance-check");
+        
+          // Example function: Sending a trace file or log string directly to your Trace Engine Space
+          async function runTraceEngine(logText, depthToggle = false) {
+            try {
+              // .predict matches the inputs expected by your Gradio app
+              const result = await traceEngineClient.predict("/predict", { 
+                log_input: logText, 
+                toggle_depth: depthToggle 
+              });
+              
+              console.log("Analysis Result:", result.data);
+              return result.data;
+            } catch (error) {
+              console.error("Error communicating with HF Space:", error);
+            }
+          }
+        </script>
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
