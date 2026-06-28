@@ -18,6 +18,7 @@
             
             --disabled: #475569;
         }
+
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -237,6 +238,119 @@
             margin-bottom: 0.6rem;
         }
 
+        /* Floating Need Assistance Trigger Button */
+        .assistant-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 0.65rem 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 0.88rem;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+        }
+
+        .assistant-btn:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .assistant-btn .bot-icon {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Slide-up Chat Window Container */
+        .chat-container {
+            position: fixed;
+            bottom: 5.5rem;
+            right: 2rem;
+            width: 380px;
+            height: 520px;
+            z-index: 101;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            
+            /* Animation parameters for elegant slide and fade interaction */
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Active class to trigger show state */
+        .chat-container.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        /* Chat Window Header Bar */
+        .chat-header {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.85rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chat-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.2rem;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        /* Embedded Agent Iframe Frame */
+        .chat-iframe {
+            width: 100%;
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+        }
+
         @media (max-width: 900px) {
             .main-layout {
                 grid-template-columns: 1fr;
@@ -246,18 +360,39 @@
                 position: relative;
                 top: 0;
             }
+            .assistant-btn {
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+            .chat-container {
+                bottom: 5rem;
+                right: 1.5rem;
+                width: calc(100% - 3rem);
+                height: 450px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient background objects -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
+    <button class="assistant-btn" onclick="toggleChat(true)" id="assistantBtn">
+        <span class="bot-icon">🤖</span>
+        <span>Need Assistance</span>
+    </button>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h4>🤖 Trace Assistant</h4>
+            <button class="chat-close-btn" onclick="toggleChat(false)">✕</button>
+        </div>
+        <iframe class="chat-iframe" src="https://dameramanish-netizen.github.io/infor-LN-Trace-Assistant/agent-test.html"></iframe>
+    </div>
+
     <div class="main-layout">
         
-        <!-- Left Column: About Me Sidebar -->
         <aside class="profile-sidebar">
             <h1>Consultant & Developer</h1>
             <div class="about-me-text">
@@ -266,10 +401,8 @@
             </div>
         </aside>
 
-        <!-- Right Column: Vertical Dashboard Stack -->
         <main class="grid">
             
-            <!-- Card 1: Infor LN Trace Engine -->
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
@@ -294,7 +427,6 @@
                 </div>
             </div>
 
-            <!-- Card 2: Trace Comparison -->
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
@@ -318,7 +450,6 @@
                 </div>
             </div>
 
-            <!-- Card 3: Performance Check (UPDATED LINK) -->
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
@@ -346,6 +477,7 @@
     </div>
 
     <script>
+        // Project card accordion behavior
         function toggleDetails(button) {
             const card = button.closest('.card');
             const panel = card.querySelector('.operations-panel');
@@ -356,6 +488,23 @@
                 panel.classList.remove('expanded');
             } else {
                 panel.classList.add('expanded');
+            }
+        }
+
+        // Smooth Chat Widget Toggle Engine
+        function toggleChat(show) {
+            const container = document.getElementById('chatContainer');
+            const btn = document.getElementById('assistantBtn');
+            
+            if (show) {
+                container.classList.add('open');
+                // Hides floating trigger button slightly while open for zero overlap
+                btn.style.opacity = '0';
+                btn.style.pointerEvents = 'none';
+            } else {
+                container.classList.remove('open');
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'all';
             }
         }
     </script>
