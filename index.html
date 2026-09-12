@@ -521,17 +521,28 @@
                 btn.style.pointerEvents = 'all';
             }
         }
+        let lastRipple = 0;
+        
         document.addEventListener('mousemove', function(e) {
-            const ripple = document.createElement('div');
-            ripple.classList.add('ripple-bg');
+            const now = Date.now();
+            if (now - lastRipple < 300) return; // 300ms కొకసారి మాత్రమే
+            lastRipple = now;
             
-            const size = 120;
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = (e.clientX - size / 2) + 'px';
-            ripple.style.top = (e.clientY - size / 2) + 'px';
+            const x = e.clientX;
+            const y = e.clientY;
+            const size = 60;
             
-            document.body.appendChild(ripple);
-            ripple.addEventListener('animationend', () => ripple.remove());
+            [0, 200, 400].forEach(delay => {
+                setTimeout(() => {
+                    const ripple = document.createElement('div');
+                    ripple.classList.add('ripple-bg');
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = (x - size / 2) + 'px';
+                    ripple.style.top = (y - size / 2) + 'px';
+                    document.body.appendChild(ripple);
+                    ripple.addEventListener('animationend', () => ripple.remove());
+                }, delay);
+            });
         });
     </script>
 </body>
