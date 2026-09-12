@@ -114,59 +114,22 @@
             align-items: start; 
         }
 
-/* ============================================
-   PASTE THIS INSIDE YOUR EXISTING <style> TAG
-   ============================================ */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 16px;
+            padding: 2.2rem;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
 
-/* --- Frosted Glass Card Effect --- */
-.card {
-    background: rgba(255, 255, 255, 0.06) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    position: relative;
-    overflow: hidden;
-    transition: 
-        border-color 0.3s ease,
-        transform 0.3s ease,
-        box-shadow 0.3s ease !important;
-}
-
-.card:hover {
-    border-color: rgba(255, 255, 255, 0.35) !important;
-    box-shadow: 
-        0 12px 48px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
-    transform: translateY(-2px) !important;
-}
-
-        
-/* --- Ripple Element (injected by JS) --- */
-.ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    transform: scale(0);
-    animation: ripple-expand 0.7s linear;
-    pointer-events: none;
-    z-index: 0;
-}
-
-@keyframes ripple-expand {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
-}
-
-/* Make card content sit above ripple */
-.card > * {
-    position: relative;
-    z-index: 1;
-}
+        .card:hover {
+            border-color: var(--accent);
+        }
 
         .card-body {
             display: flex;
@@ -416,14 +379,14 @@
     <div class="blob blob-2"></div>
 
     <button class="assistant-btn" onclick="toggleChat(true)" id="assistantBtn">
-        <span class="bot-icon">🤖</span>
+        <span class="bot-icon">??</span>
         <span>Need Assistance</span>
     </button>
 
     <div class="chat-container" id="chatContainer">
         <div class="chat-header">
-            <h4>🤖 Trace Assistant</h4>
-            <button class="chat-close-btn" onclick="toggleChat(false)">✕</button>
+            <h4>?? Trace Assistant</h4>
+            <button class="chat-close-btn" onclick="toggleChat(false)">?</button>
         </div>
         <iframe class="chat-iframe" src="https://dameramanish-netizen.github.io/infor-LN-Trace-Assistant/agent-test.html"></iframe>
     </div>
@@ -444,13 +407,13 @@
                 <div class="card-body">
                     <div class="card-header">
                         <h3>Infor LN Trace Engine</h3>
-                        <a href="https://manish0000007-ln-trace-debugger.hf.space" target="_blank" class="launch-link" title="Launch Application">↗</a>
+                        <a href="https://manish0000007-ln-trace-debugger.hf.space" target="_blank" class="launch-link" title="Launch Application">?</a>
                     </div>
                     <p class="card-description">High-performance diagnostic utility optimized for deep-level automated log parsing, structural error identification, and stack isolation.</p>
                 </div>
                 <div class="card-footer">
                     <button class="toggle-btn" onclick="toggleDetails(this)">
-                        How it operates <span class="arrow">▼</span>
+                        How it operates <span class="arrow">?</span>
                     </button>
                     <div class="operations-panel">
                         <h4>Operational Mechanics</h4>
@@ -468,13 +431,13 @@
                 <div class="card-body">
                     <div class="card-header">
                         <h3>Trace Comparison</h3>
-                        <a href="https://manish0000007-infor-ln-trace-compare.hf.space/" target="_blank" class="launch-link" title="Launch Application">↗</a>
+                        <a href="https://manish0000007-infor-ln-trace-compare.hf.space/" target="_blank" class="launch-link" title="Launch Application">?</a>
                     </div>
                     <p class="card-description">Dual-trace differential analysis engine engineered to cleanly isolate execution path variations between successful and failed environments.</p>
                 </div>
                 <div class="card-footer">
                     <button class="toggle-btn" onclick="toggleDetails(this)">
-                        How it operates <span class="arrow">▼</span>
+                        How it operates <span class="arrow">?</span>
                     </button>
                     <div class="operations-panel">
                         <h4>Operational Mechanics</h4>
@@ -491,13 +454,13 @@
                 <div class="card-body">
                     <div class="card-header">
                         <h3>Performance Check</h3>
-                        <a href="https://manish0000007-performance-check.hf.space/" target="_blank" class="launch-link" title="Launch Application">↗</a>
+                        <a href="https://manish0000007-performance-check.hf.space/" target="_blank" class="launch-link" title="Launch Application">?</a>
                     </div>
                     <p class="card-description">Algorithmic execution profiling framework constructed to parse timing telemetry and expose optimization bottlenecks instantly.</p>
                 </div>
                 <div class="card-footer">
                     <button class="toggle-btn" onclick="toggleDetails(this)">
-                        How it operates <span class="arrow">▼</span>
+                        How it operates <span class="arrow">?</span>
                     </button>
                     <div class="operations-panel">
                         <h4>Operational Mechanics</h4>
@@ -544,31 +507,6 @@
                 btn.style.pointerEvents = 'all';
             }
         }
-
-// --- Mouse Move Ripple Effect on Cards ---
-document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mousemove', function(e) {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // Remove old ripple if exists
-        const oldRipple = card.querySelector('.ripple');
-        if (oldRipple) oldRipple.remove();
-
-        const ripple = document.createElement('span');
-        ripple.classList.add('ripple');
-
-        const size = Math.max(rect.width, rect.height);
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = (x - size / 2) + 'px';
-        ripple.style.top = (y - size / 2) + 'px';
-
-        card.appendChild(ripple);
-
-        ripple.addEventListener('animationend', () => ripple.remove());
-    });
-});
     </script>
 </body>
 </html>
