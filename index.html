@@ -350,6 +350,22 @@
             border: none;
             background: transparent;
         }
+@keyframes ripple-expand {
+    to { transform: scale(4); opacity: 0; }
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(0);
+    animation: ripple-expand 0.8s linear;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.card { position: relative; overflow: hidden; }
+.card > * { position: relative; z-index: 1; }
 
         @media (max-width: 900px) {
             .main-layout {
@@ -507,6 +523,28 @@
                 btn.style.pointerEvents = 'all';
             }
         }
+// Mouse Move Ripple Effect
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', function(e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const oldRipple = card.querySelector('.ripple');
+        if (oldRipple) oldRipple.remove();
+
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (x - size / 2) + 'px';
+        ripple.style.top = (y - size / 2) + 'px';
+
+        card.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+    });
+});
     </script>
 </body>
 </html>
