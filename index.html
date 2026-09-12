@@ -114,22 +114,58 @@
             align-items: start; 
         }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 16px;
-            padding: 2.2rem;
-            transition: border-color 0.3s ease, transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-        }
+/* ============================================
+   PASTE THIS INSIDE YOUR EXISTING <style> TAG
+   ============================================ */
 
-        .card:hover {
-            border-color: var(--accent);
-        }
+/* --- Frosted Glass Card Effect --- */
+.card {
+    background: rgba(255, 255, 255, 0.06) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    position: relative;
+    overflow: hidden;
+    transition: 
+        border-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease !important;
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* --- Ripple Element (injected by JS) --- */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(0);
+    animation: ripple-expand 0.7s linear;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes ripple-expand {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Make card content sit above ripple */
+.card > * {
+    position: relative;
+    z-index: 1;
+}
 
         .card-body {
             display: flex;
@@ -507,6 +543,31 @@
                 btn.style.pointerEvents = 'all';
             }
         }
+
+// --- Mouse Move Ripple Effect on Cards ---
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', function(e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Remove old ripple if exists
+        const oldRipple = card.querySelector('.ripple');
+        if (oldRipple) oldRipple.remove();
+
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (x - size / 2) + 'px';
+        ripple.style.top = (y - size / 2) + 'px';
+
+        card.appendChild(ripple);
+
+        ripple.addEventListener('animationend', () => ripple.remove());
+    });
+});
     </script>
 </body>
 </html>
